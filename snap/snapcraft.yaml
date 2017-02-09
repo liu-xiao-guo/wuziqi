@@ -1,0 +1,44 @@
+name: wuziqi
+version: '0.1' 
+summary: This is a wuziqi game
+description: |
+  This is a demo showing how to snap a html5 app into a snap
+
+grade: stable
+confinement: strict
+
+apps:
+  wuziqi:
+    command: ubuntu-html5-app-launcher $@ --www=www --inspector
+    plugs:
+      - browser-sandbox
+      - camera
+      - mir
+      - network
+      - network-bind
+      - opengl
+      - pulseaudio
+      - screen-inhibit-control
+      - unity7
+
+plugs:
+  browser-sandbox:
+    interface: browser-support
+    allow-sandbox: false
+  platform:
+    interface: content
+    content: ubuntu-app-platform1
+    target: ubuntu-app-platform
+    default-provider: ubuntu-app-platform
+
+parts:
+  webapp:
+    after: [ webapp-helper, desktop-ubuntu-app-platform ]
+    plugin: dump
+    source: .
+    stage-packages:
+      - ubuntu-html5-container
+      - ubuntu-html5-theme
+    prime:
+      - usr/*
+      - www/*
